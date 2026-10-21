@@ -160,3 +160,16 @@ wrangler deploy
 3. **团队协作**：使用 wrangler.toml 配置，代码即配置
 
 **记住：无论哪种方式，都无需修改 `src/worker.js` 代码！**
+
+
+## Cloudflare Pages Advanced mode（适用于本仓库）
+
+本仓库的 `src/worker.js` 是 Module Worker 入口。Pages 不能仅把仓库文件当静态资产上传；需要将入口放到输出目录的 `_worker.js`。
+
+1. Pages 项目连接此仓库。
+2. Build command：`sh build.sh`
+3. Build output directory：`public`
+4. Root directory：仓库根目录（留空）。
+5. 重新部署后，测试 `/health` 与 `/proxy/httpbin.org/json`。
+
+仓库根目录的 `build.sh` 会将 `src/worker.js` 复制到 `public/_worker.js`。`wrangler.toml` 中的 `pages_build_output_dir` 用于标识 Pages 输出目录。
